@@ -1,3 +1,8 @@
+{ travisProvider, circleProvider } = require("./providers")
 
 module.exports =
-  run: -> console.log 'coffeescript works'
+  run: ->
+
+  config: (settings={}) ->
+    if settings.providers.travis?
+      travisProvider.configure(settings.providers.travis)
