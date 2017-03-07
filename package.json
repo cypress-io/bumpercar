@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/cypress-io/cypress-bumpercar#readme",
   "dependencies": {
+    "axios": "^0.15.3",
     "bluebird": "^3.5.0",
     "coffeescript": "^1.12.4"
   },
