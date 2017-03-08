@@ -134,7 +134,7 @@ describe.only "Travis API wrapper", ->
         .then =>
           expect(@api.get).to.be.calledWith("/settings/env_vars?repository_id=5681044")
 
-      it.only "extracts the env object from the response", ->
+      it "extracts the env object from the response", ->
         @api.fetchEnvVarsByRepoId(5681044)
 
         .then (envVars) ->
@@ -144,8 +144,39 @@ describe.only "Travis API wrapper", ->
             "CYPRESS_RECORD_KEY"
           ]
 
+    context "#createEnvVarByRepoId(repoId, envVar)", ->
+      beforeEach ->
+        @api.post.resolves(data: {
+          env_var: {
+            id: 'd420196b-e328-4e81-a9d9-f46072c4d681',
+            name: 'VAR_1',
+            value: null,
+            public: false,
+            repository_id: 5681044
+          }
+        })
 
-    context "#setEnvByRepoId(repoId, envObj)", ->
+      it "calls ensureAuthorization", ->
+        @api.createEnvVarByRepoId(5681044, {})
+
+        .then =>
+          expect(@api.ensureAuthorization).to.be.called
+
+      it "POST to env var creation endpoint", ->
+        @api.createEnvVarByRepoId(5681044, 'VAR_1', 'a')
+
+        .then (response) =>
+          expect(@api.post).to.be.calledWith("/settings/env_vars?repository_id=5681044", {
+            env_var: {
+              name: 'VAR_1'
+              value: 'a'
+              public: false
+            }
+          })
+
+      it "POST create endpoint for env vars that don't exist"
+      it "doesn't request anything if there are no new env vars"
+
     context "#fetchLatestBuildByRepoSlug(projectName)", ->
     context "#restartBuildById(latestBuildId)", ->
       it 'yes', ->

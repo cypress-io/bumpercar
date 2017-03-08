@@ -13,7 +13,12 @@ module.exports =
           api.fetchEnvVarsByRepoId(repoId)
 
         .then (existingVars) ->
-          api.updateEnvByRepoId(repoId, existingVars, varsToSet)
+          [updateVars, createVars] = reduceToDiff(existingVars, varsToSet)
+
+          Promise.all([
+            Promise.map updateVars, (updateVar) -> api.updateEnvVarByRepoId(repoId, updateVar)
+            Promise.map createVars, (createVar) -> api.createEnvVarByRepoId(repoId, createVar)
+          ])
 
       runProject: (projectName) ->
         api.fetchLatestBuildByRepoSlug(projectName)

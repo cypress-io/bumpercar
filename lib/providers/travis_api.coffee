@@ -47,8 +47,15 @@ createAPI = (githubToken) ->
     .then (response) ->
       response.data.env_vars
 
-  api.setEnvById = (envId, existingVars, varsToSet) ->
-    api.patch("/settings/env_vars/#{envId}?repository_id={repository.id}")
+  api.createEnvVarByRepoId = (repoId, name, value, publicVisibility=false) ->
+    @ensureAuthorization().then =>
+      api.post("/settings/env_vars?repository_id=#{repoId}", env_var: {
+        name, value, public: publicVisibility
+      })
+
+  api.updateEnvVarByRepoId = (repoId, varToUpdate) ->
+    @ensureAuthorization().then =>
+      api.patch("/settings/env_vars/#{varToUpdate.id}?repository_id=#{repoId}")
 
   api.fetchLatestBuildByRepoSlug = (repoSlug) ->
     api.get("/repos/#{repoSlug}/builds")
