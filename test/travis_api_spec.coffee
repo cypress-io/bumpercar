@@ -1,5 +1,7 @@
 require("./spec_helper")
 
+_ = require("lodash")
+
 travisApi = require("../lib/providers/travis_api")
 
 
@@ -80,14 +82,69 @@ describe.only "Travis API wrapper", ->
         .then =>
           expect(@api.ensureAuthorization).to.be.called
 
-      it.only "extracts the id from the respone", ->
+      it "performs a GET on /repos/:slug", ->
+        @api.getRepoIdBySlug('cypress-io/cypress-example-todomvc')
+
+        .then =>
+          expect(@api.get).to.be.calledWith("/repos/cypress-io/cypress-example-todomvc")
+
+      it "extracts the id from the response", ->
         @api.getRepoIdBySlug('cypress-io/cypress-example-todomvc')
 
         .then (repoId) ->
           expect(repoId).to.equal 5681044
 
-
     context "#fetchEnvVarsByRepoId(repoId)", ->
+      beforeEach ->
+        @api.get.resolves(data: {
+          env_vars: [
+            {
+              "id": "65fb32ae-cf31-4c2d-879a-3b65152f5c3e"
+              "name": "CYPRESS_VERSION"
+              "public": true
+              "repository_id": 5681044
+              "value": "0.19.0"
+            }
+            {
+              "id": "7812dda5-92a0-445a-b2c2-e45239892f23"
+              "name": "CYPRESS_PROJECT_ID"
+              "public": false
+              "repository_id": 5681044
+              "value": [null]
+            }
+            {
+              "id": "4efb4567-cebf-4c93-8d35-8554ece13cb7"
+              "name": "CYPRESS_RECORD_KEY"
+              "public": false
+              "repository_id": 5681044
+              "value": [null]
+            }
+          ]
+        })
+
+      it "calls ensureAuthorization", ->
+        @api.fetchEnvVarsByRepoId(5681044)
+
+        .then =>
+          expect(@api.ensureAuthorization).to.be.called
+
+      it "performs a GET on the env vars endpoint", ->
+        @api.fetchEnvVarsByRepoId(5681044)
+
+        .then =>
+          expect(@api.get).to.be.calledWith("/settings/env_vars?repository_id=5681044")
+
+      it.only "extracts the env object from the response", ->
+        @api.fetchEnvVarsByRepoId(5681044)
+
+        .then (envVars) ->
+          expect(_.map(envVars, "name")).to.eql [
+            "CYPRESS_VERSION"
+            "CYPRESS_PROJECT_ID"
+            "CYPRESS_RECORD_KEY"
+          ]
+
+
     context "#setEnvByRepoId(repoId, envObj)", ->
     context "#fetchLatestBuildByRepoSlug(projectName)", ->
     context "#restartBuildById(latestBuildId)", ->

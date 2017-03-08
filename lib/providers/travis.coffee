@@ -6,14 +6,14 @@ module.exports =
     api = travisApi.create(options.githubToken)
 
     return {
-      updateProjectEnv: (projectName, envObj) ->
+      updateProjectEnv: (projectName, varsToSet) ->
         api.getRepoIdBySlug(projectName)
 
         .then (repoId) ->
           api.fetchEnvVarsByRepoId(repoId)
 
-        .then (envVars) ->
-          api.setEnvByRepoId(repoId, envObj)
+        .then (existingVars) ->
+          api.updateEnvByRepoId(repoId, existingVars, varsToSet)
 
       runProject: (projectName) ->
         api.fetchLatestBuildByRepoSlug(projectName)

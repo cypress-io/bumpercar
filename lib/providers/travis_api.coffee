@@ -35,13 +35,19 @@ createAPI = (githubToken) ->
 
   api.getRepoIdBySlug = (repoSlug) ->
     @ensureAuthorization().then =>
-      api.get("/repos/#{repoSlug}").then (response) ->
-        response.data.repo.id
+      api.get("/repos/#{repoSlug}")
+
+    .then (response) ->
+      response.data.repo.id
 
   api.fetchEnvVarsByRepoId = (repoId) ->
-    api.get("/settings/env_vars?repository_id={repoId}")
+    @ensureAuthorization().then =>
+      api.get("/settings/env_vars?repository_id=#{repoId}")
 
-  api.setEnvById = (envId, envObject) ->
+    .then (response) ->
+      response.data.env_vars
+
+  api.setEnvById = (envId, existingVars, varsToSet) ->
     api.patch("/settings/env_vars/#{envId}?repository_id={repository.id}")
 
   api.fetchLatestBuildByRepoSlug = (repoSlug) ->
