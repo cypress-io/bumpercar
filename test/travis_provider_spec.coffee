@@ -1,6 +1,6 @@
 travisProvider = require("../lib/providers/travis")
 
-describe.only "Travis Provider", ->
+describe "Travis Provider", ->
   beforeEach ->
     @travisInstance = travisProvider.configure({
       githubToken: "get-a-valid-token-from-github"
