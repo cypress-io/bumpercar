@@ -1,5 +1,6 @@
 Promise = require("bluebird")
 axios   = require("axios")
+inspect = require("util").inspect
 
 createAPI = (githubToken) ->
   api = axios.create({
@@ -51,8 +52,8 @@ createAPI = (githubToken) ->
     @ensureAuthorization().then =>
       api.post("/settings/env_vars?repository_id=#{repoId}", {
         env_var: {
-          name: varName
-          value: varValue
+          name:   varName
+          value:  varValue
           public: varPublic
         }
       })
@@ -61,17 +62,27 @@ createAPI = (githubToken) ->
     @ensureAuthorization().then =>
       api.patch("/settings/env_vars/#{varId}?repository_id=#{repoId}", {
         env_var: {
-          name: varName
-          value: varValue
+          name:   varName
+          value:  varValue
           public: varPublic
         }
       })
 
   api.fetchLatestBuildByRepoSlug = (repoSlug) ->
-    api.get("/repos/#{repoSlug}/builds")
+    @ensureAuthorization().then =>
+      api.get("/repos/#{repoSlug}/builds")
+
+    .then (response) ->
+      # Travis returns the builds in descending time order
+      response.data.builds[0]?.id
 
   api.restartBuildById = (buildId) ->
-    api.post("/builds/#{buildId}/restart")
+    @ensureAuthorization().then =>
+      api.post("/builds/#{buildId}/restart")
+
+    .then (response) ->
+      if response.data.result isnt true
+        throw new Error("Restarting Build failed for build id: #{buildId} with message #{inspect response.data.flash}")
 
   api
 

@@ -44,7 +44,6 @@ describe.only "Travis API wrapper", ->
       .then =>
         expect(@api.defaults.headers["Authorization"]).to.equal 'token "def456"'
 
-
   context "with githubToken", ->
     beforeEach ->
       @api = travisApi.create(REAL_TOKEN)
@@ -54,7 +53,6 @@ describe.only "Travis API wrapper", ->
       @sandbox.stub(@api, 'get')
       @sandbox.stub(@api, 'post')
       @sandbox.stub(@api, 'patch')
-
 
     context "#getRepoIdBySlug(projectName)", ->
       beforeEach ->
@@ -192,7 +190,7 @@ describe.only "Travis API wrapper", ->
         .then =>
           expect(@api.ensureAuthorization).to.be.called
 
-      it.only "PATCH to env var update endpoint", ->
+      it "PATCH to env var update endpoint", ->
         @api.updateEnvVarByRepoId(5681044, '314c3ee8-f8a1-4206-9e46-47beca452522', 'VAR_1', 'x', true)
 
         .then (response) =>
@@ -205,5 +203,90 @@ describe.only "Travis API wrapper", ->
           })
 
     context "#fetchLatestBuildByRepoSlug(projectName)", ->
+      beforeEach ->
+        @api.get.resolves(data: {
+          builds: [
+            {
+              id: 1000
+            }, {
+              id: 198663407,
+              repository_id: 5681044,
+              commit_id: 56834820,
+              number: '38',
+              event_type: 'push',
+              pull_request: false,
+              pull_request_title: null,
+              pull_request_number: null,
+              config: {
+                language: 'node_js',
+                node_js: [ 5.3 ],
+                install: [ 'npm install', 'npm install -g cypress-cli' ],
+                before_script: [ 'npm start -- --silent &' ],
+                script: [ 'cypress ci' ],
+                '.result': 'configured',
+                group: 'stable',
+                dist: 'precise'
+              },
+              state: 'passed',
+              started_at: '2017-02-05T21:46:42Z',
+              finished_at: '2017-02-05T21:48:43Z',
+              duration: 121,
+              job_ids: [ 198663408 ]
+            }
+          ]
+        })
+
+      it "calls ensureAuthorization", ->
+        @api.fetchLatestBuildByRepoSlug("")
+
+        .then =>
+          expect(@api.ensureAuthorization).to.be.called
+
+      it "GET the repo builds endpoint", ->
+        @api.fetchLatestBuildByRepoSlug("cypress-io/cypress-example-todomvc")
+
+        .then =>
+          expect(@api.get).to.be.calledWith("/repos/cypress-io/cypress-example-todomvc/builds")
+
+      it "extracts the id of the lowest-index build in the response", ->
+        @api.fetchLatestBuildByRepoSlug("cypress-io/cypress-example-todomvc")
+
+        .then (buildId) =>
+          expect(buildId).to.equal 1000
+
     context "#restartBuildById(latestBuildId)", ->
-      it 'yes', ->
+      beforeEach ->
+        @api.post.resolves(data: {
+          result: true,
+          flash: [ { notice: 'The build was successfully restarted.' } ]
+        })
+
+      it "calls ensureAuthorization", ->
+        @api.restartBuildById(198663407)
+
+        .then =>
+          expect(@api.ensureAuthorization).to.be.called
+
+      it "POST to build restart endpoint", ->
+        @api.restartBuildById(198663407)
+
+        .then (response) =>
+          expect(@api.post).to.be.calledWith("/builds/198663407/restart")
+
+      it "rejects if the result is false", ->
+        @api.post.resolves(data: {
+          result: false
+          flash: [
+            notice: 'blah'
+            warning: 'yar'
+          ]
+        })
+
+        @api.restartBuildById(198663407)
+
+        .then -> throw new Error("Should have rejected due to result: false")
+
+        .catch (error) ->
+          expect(error.message).to.include "Restarting Build failed for build id: 198663407"
+          expect(error.message).to.include "blah"
+          expect(error.message).to.include "yar"
