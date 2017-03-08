@@ -148,7 +148,7 @@ describe.only "Travis API wrapper", ->
       beforeEach ->
         @api.post.resolves(data: {
           env_var: {
-            id: 'd420196b-e328-4e81-a9d9-f46072c4d681',
+            id: '314c3ee8-f8a1-4206-9e46-47beca452522',
             name: 'VAR_1',
             value: null,
             public: false,
@@ -174,8 +174,35 @@ describe.only "Travis API wrapper", ->
             }
           })
 
-      it "POST create endpoint for env vars that don't exist"
-      it "doesn't request anything if there are no new env vars"
+    context "#updateEnvVarByRepoId(repoId, envVar)", ->
+      beforeEach ->
+        @api.patch.resolves(data: {
+          env_var: {
+            id: '314c3ee8-f8a1-4206-9e46-47beca452522',
+            name: 'VAR_1',
+            value: 'x',
+            public: true,
+            repository_id: 5681044
+          }
+        })
+
+      it "calls ensureAuthorization", ->
+        @api.updateEnvVarByRepoId(5681044, {})
+
+        .then =>
+          expect(@api.ensureAuthorization).to.be.called
+
+      it.only "PATCH to env var update endpoint", ->
+        @api.updateEnvVarByRepoId(5681044, '314c3ee8-f8a1-4206-9e46-47beca452522', 'VAR_1', 'x', true)
+
+        .then (response) =>
+          expect(@api.patch).to.be.calledWith("/settings/env_vars/314c3ee8-f8a1-4206-9e46-47beca452522?repository_id=5681044", {
+            env_var: {
+              name: 'VAR_1'
+              value: 'x'
+              public: true
+            }
+          })
 
     context "#fetchLatestBuildByRepoSlug(projectName)", ->
     context "#restartBuildById(latestBuildId)", ->
