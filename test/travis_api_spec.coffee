@@ -4,8 +4,7 @@ _ = require("lodash")
 
 travisApi = require("../lib/providers/travis_api")
 
-
-describe.only "Travis API wrapper", ->
+describe "Travis API wrapper", ->
   it "requires a githubToken", ->
     expect ->
       travisApi.create()
@@ -46,7 +45,7 @@ describe.only "Travis API wrapper", ->
 
   context "with githubToken", ->
     beforeEach ->
-      @api = travisApi.create(REAL_TOKEN)
+      @api = travisApi.create('get-a-valid-token-from-github')
       # short-circuit the auth preflight
       @sandbox.stub(@api, 'ensureAuthorization').resolves(true)
       # stop all requests

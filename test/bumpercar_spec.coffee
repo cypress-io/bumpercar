@@ -98,28 +98,20 @@ describe "Bumpercar", ->
 
   context "integration", ->
     xit "looks like this", ->
-      bumpercar = require("cypress-bumpercar")
-
-      car = bumpercar.config({
+      car = bumpercar.create({
         providers: {
           travis: {
-            githubToken: "abc123"
-          },
-          circle: {
-            circleToken: "def456"
+            githubToken: "get-a-valid-token-from-github"
+            # githubToken: "e1affccc1ab7b7b853f076b66d39bbfcdfdfdce3"
           }
         }
       })
 
-      fns.updateProjectEnv()
-
-      fn.runProject()
-
-      bumpercar.updateProjectEnv("projectName", "circle", {
-       CYPRESS_VERSION: "0.19.1"
+      car.updateProjectEnv("cypress-io/cypress-example-todomvc", "travis", {
+       VAR_1: "LO"
       })
 
       .then ->
         Promise.all([
-         bumpercar.runProject("projectName", "circle")
+         car.runProject("cypress-io/cypress-example-todomvc", "travis")
         ])
