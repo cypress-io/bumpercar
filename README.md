@@ -3,6 +3,8 @@
 Make it easy to bump versions and re-run CI builds across many projects and CI providers.
 
 ```coffeescript
+bumpercar = require("cypress-bumpercar")
+
 # configure a new Bumpercar
 car = bumpercar.create({
   providers: {
