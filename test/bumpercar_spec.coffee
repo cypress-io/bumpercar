@@ -102,7 +102,6 @@ describe "Bumpercar", ->
         providers: {
           travis: {
             githubToken: "get-a-valid-token-from-github"
-            # githubToken: "e1affccc1ab7b7b853f076b66d39bbfcdfdfdce3"
           }
         }
       })
