@@ -1,4 +1,5 @@
 Promise = require("bluebird")
+inspect = require("util").inspect
 
 { travisProvider, circleProvider } = require("./providers")
 
@@ -22,9 +23,24 @@ module.exports = {
           provider = findProviderOrDie(providerName)
           provider.updateProjectEnv(projectName, envObject)
 
+        .then ->
+          console.log("Updated the variable #{inspect envObject} for #{projectName} on #{providerName}")
+
+        .catch (error) ->
+          console.error("Error attempting to update the variable #{inspect envObject} for #{projectName} on #{providerName}")
+          throw error
+
       runProject: (projectName, providerName) ->
         Promise.try ->
           provider = findProviderOrDie(providerName)
           provider.runProject(projectName)
+
+        .then ->
+          console.log("Triggered a run for #{projectName} on #{providerName}")
+
+        .catch (error) ->
+          console.error("Error attempting to trigger a run for #{projectName} on #{providerName}")
+          throw error
+
     }
 }
