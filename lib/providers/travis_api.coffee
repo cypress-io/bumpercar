@@ -12,17 +12,24 @@ createAPI = (githubToken) ->
     }
   })
 
+  # a lock to keep from sending multiple auths in parallel
+  api.authorizing = null
   # sets up authorization for all other requests
   api.ensureAuthorization = ->
     # if we don't yet have an authorization header
     if !@defaults.headers['Authorization']
-      # go and trade the github token for an access token
-      @tradeGithubTokenForAccessToken()
+      if !api.authorizing
+        # set the lock and trade the github token for an access token
+        api.authorizing = @tradeGithubTokenForAccessToken()
 
-      .then (accessToken) =>
-        # and set the authorization header appropriately
-        @defaults.headers['Authorization'] = "token \"#{accessToken}\""
+        .then (accessToken) =>
+          # and set the authorization header appropriately
+          @defaults.headers['Authorization'] = "token \"#{accessToken}\""
+          # clear the lock
+          api.authorizing = null
 
+      # return the lock promise, whether we created it or just came behind it
+      return api.authorizing
     else
       Promise.resolve(true)
 
