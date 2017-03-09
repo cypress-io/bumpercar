@@ -94,23 +94,3 @@ describe "Bumpercar", ->
 
         .catch (error) ->
           expect(error.message).to.equal "Provider wasn't configured: 'circle'"
-
-
-  context "integration", ->
-    xit "looks like this", ->
-      car = bumpercar.create({
-        providers: {
-          travis: {
-            githubToken: "get-a-valid-token-from-github"
-          }
-        }
-      })
-
-      car.updateProjectEnv("cypress-io/cypress-example-todomvc", "travis", {
-       VAR_1: "LO"
-      })
-
-      .then ->
-        Promise.all([
-         car.runProject("cypress-io/cypress-example-todomvc", "travis")
-        ])
