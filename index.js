@@ -1,2 +1,3 @@
 require("coffee-script/register")
-require("./lib/bumpercar").run()
+
+module.exports = require("./lib/bumpercar")
