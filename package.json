@@ -1,6 +1,6 @@
 {
   "name": "cypress-bumpercar",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Easily update settings and trigger builds across projects and CI Providers.",
   "main": "index.js",
   "scripts": {
