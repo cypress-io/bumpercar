@@ -4,7 +4,7 @@
   "description": "Easily update settings and trigger builds across projects and CI Providers.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "release": "releaser",
     "test": "NODE_ENV=test mocha --watch"
   },
   "repository": {
@@ -28,6 +28,7 @@
     "coffeescript": "^1.12.4"
   },
   "devDependencies": {
+    "@cypress/core-releaser": "^0.1.8",
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
     "sinon": "^1.17.7",
