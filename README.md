@@ -34,6 +34,9 @@ car.updateProjectEnv("cypress-io/cypress-download", "circle", {
 
 ## Changelog
 
+#### 1.0.4 - *(03/10/17)*
+- try release again...
+
 #### 1.0.3 - *(03/10/17)*
 - try release again...
 
