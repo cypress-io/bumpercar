@@ -34,5 +34,8 @@ car.updateProjectEnv("cypress-io/cypress-download", "circle", {
 
 ## Changelog
 
+#### 1.0.6 - *(04/20/17)*
+- bump cypress coffee script and releaser dep
+
 #### 1.0.5 - *(03/10/17)*
 - add cypress-core-releaser to the mix and do a release
