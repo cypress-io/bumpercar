@@ -2,6 +2,12 @@
 
 Make it easy to bump versions and re-run CI builds across many projects and CI providers.
 
+[![CircleCI](https://circleci.com/gh/cypress-io/bumpercar.svg?style=svg)](https://circleci.com/gh/cypress-io/bumpercar)
+[![semantic-release][semantic-image] ][semantic-url]
+
+[semantic-image]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
+[semantic-url]: https://github.com/semantic-release/semantic-release
+
 ```coffeescript
 bumpercar = require("cypress-bumpercar")
 
