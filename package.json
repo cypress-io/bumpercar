@@ -1,16 +1,17 @@
 {
   "name": "@cypress/bumpercar",
-  "version": "1.0.6",
+  "version": "0.0.0-development",
   "description": "Easily update settings and trigger builds across projects and CI Providers.",
   "main": "index.js",
   "scripts": {
     "release": "releaser",
     "test": "NODE_ENV=test mocha",
-    "watch": "NODE_ENV=test mocha --watch"
+    "watch": "NODE_ENV=test mocha --watch",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cypress-io/cypress-bumpercar.git"
+    "url": "https://github.com/cypress-io/cypress-bumpercar.git"
   },
   "keywords": [
     "deployment",
@@ -26,14 +27,26 @@
   "dependencies": {
     "@cypress/coffee-script": "0.1.2",
     "axios": "^0.15.3",
-    "bluebird": "^3.5.0"
+    "bluebird": "^3.5.0",
+    "debug": "^3.1.0",
+    "lodash": "^4.17.4",
+    "ramda": "^0.24.1"
   },
   "devDependencies": {
     "@cypress/releaser": "0.1.12",
     "chai": "^3.5.0",
+    "condition-circle": "^1.5.0",
+    "github-post-release": "^1.13.1",
     "mocha": "^3.2.0",
+    "semantic-release": "^8.0.3",
     "sinon": "^1.17.7",
     "sinon-as-promised": "^4.0.2",
-    "sinon-chai": "^2.8.0"
+    "sinon-chai": "^2.8.0",
+    "snap-shot-it": "^4.0.1"
+  },
+  "release": {
+    "verifyConditions": "condition-circle",
+    "analyzeCommits": "simple-commit-message",
+    "generateNotes": "github-post-release"
   }
 }
