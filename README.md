@@ -36,6 +36,10 @@ car.updateProjectEnv("cypress-io/cypress-download", "circle", {
 - `npm test` runs the unit tests once
 - `npm run watch` keeps watching for file changes and reruns the tests
 
+## Debugging
+
+Run commands with `DEBUG=bumper` environment variable
+
 ## Changelog
 
 #### 1.0.6 - *(04/20/17)*
