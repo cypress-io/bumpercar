@@ -31,6 +31,10 @@ car.updateProjectEnv("cypress-io/cypress-download", "circle", {
   car.runProject("cypress-io/cypress-download", "circle")
 ```
 
+## Testing
+
+- `npm test` runs the unit tests once
+- `npm run watch` keeps watching for file changes and reruns the tests
 
 ## Changelog
 
