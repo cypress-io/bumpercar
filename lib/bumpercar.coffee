@@ -1,7 +1,7 @@
 Promise = require("bluebird")
 inspect = require("util").inspect
 
-{ travisProvider, circleProvider } = require("./providers")
+{ travisProvider, circleProvider, appVeyorProvider } = require("./providers")
 
 module.exports = {
   create: (config = {}) ->
@@ -11,6 +11,9 @@ module.exports = {
 
     if config.providers?.circle?
       providers.circle = circleProvider.configure(config.providers?.circle)
+
+    if config.providers?.appVeyor?
+      providers.appVeyor = appVeyorProvider.configure(config.providers?.appVeyor)
 
     findProviderOrDie = (providerName) ->
       providers[providerName] or throw new Error("Provider wasn't configured: '#{providerName}'")
