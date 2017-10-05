@@ -5,15 +5,18 @@ inspect = require("util").inspect
 
 module.exports = {
   create: (config = {}) ->
+    configProviders = config.providers || {}
+    console.log("Config providers has", Object.keys(configProviders))
+
     providers = {}
-    if config.providers?.travis?
-      providers.travis = travisProvider.configure(config.providers?.travis)
+    if configProviders.travis?
+      providers.travis = travisProvider.configure(configProviders.travis)
 
-    if config.providers?.circle?
-      providers.circle = circleProvider.configure(config.providers?.circle)
+    if configProviders.circle?
+      providers.circle = circleProvider.configure(configProviders.circle)
 
-    if config.providers?.appVeyor?
-      providers.appVeyor = appVeyorProvider.configure(config.providers?.appVeyor)
+    if configProviders.appVeyor?
+      providers.appVeyor = appVeyorProvider.configure(configProviders.appVeyor)
 
     findProviderOrDie = (providerName) ->
       providers[providerName] or throw new Error("Provider wasn't configured: '#{providerName}'")
