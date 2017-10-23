@@ -5,6 +5,9 @@ check = require("check-more-types")
 debug = require("debug")("bumper")
 
 toData = R.prop("data")
+env = R.prop("env")
+
+buildkiteApiUrl = "https://api.buildkite.com/v2"
 
 getPipelineUrl = (organization, project) ->
   la(check.unemptyString(organization), "missing organization", organization)
@@ -12,17 +15,29 @@ getPipelineUrl = (organization, project) ->
   "/organizations/#{organization}/pipelines/#{project}"
 
 module.exports = {
+  url: buildkiteApiUrl
+
   create: (token) ->
     throw new Error("Buildkite requires an access token!") if !token
 
     api = axios.create({
-      baseURL: "https://api.buildkite.com/v2"
+      baseURL: buildkiteApiUrl
       headers: {
         'Content-Type': 'application/json',
         'Authorization': "Bearer #{token}"
       }
     })
 
+    # returns merged variable object from pipeline
+    setEnvironmentVariables = (organization, project, variables = {}) ->
+      url = getPipelineUrl(organization, project)
+      api.patch(url, {
+        env: variables
+      })
+      .then toData
+      .then env
+
+    ## public API
     api.getPipelineUrl = getPipelineUrl
 
     api.getPipeline = (organization, project) ->
@@ -38,17 +53,12 @@ module.exports = {
       api.post(url, pipeline)
       .then toData
 
-    api.setEnvironmentVariables = (organization, project, variables = {}) ->
-      url = getPipelineUrl(organization, project)
-      api.patch(url, {
-        env: variables
-      })
-
     api.updateEnvironmentVariables = (organization, project, variables) ->
       api.getPipeline(organization, project)
-      .then (pipeline) ->
-        merged = R.merge(pipeline.env, variables)
-        api.setEnvironmentVariables(organization, project, merged)
+      .then env
+      .then (oldVariables) ->
+        merged = R.merge(oldVariables, variables)
+        setEnvironmentVariables(organization, project, merged)
 
     api.triggerNewBuild = (organization, project) ->
       throw new Error "Not implemented for Buildkite yet"
