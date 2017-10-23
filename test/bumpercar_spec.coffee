@@ -78,7 +78,11 @@ describe "Bumpercar", ->
         .then -> throw new Error("Should have thrown!")
 
         .catch (error) ->
-          expect(error.message).to.equal "Provider wasn't configured: 'circle'"
+          expected = """
+          Provider wasn't configured: 'circle'
+          Available providers: travis
+          """
+          expect(error.message).to.equal(expected)
 
     describe "#runProject", ->
       it "calls through to travis", ->
@@ -93,4 +97,8 @@ describe "Bumpercar", ->
         .then -> throw new Error("Should have thrown!")
 
         .catch (error) ->
-          expect(error.message).to.equal "Provider wasn't configured: 'circle'"
+          expected = """
+          Provider wasn't configured: 'circle'
+          Available providers: travis
+          """
+          expect(error.message).to.equal(expected)

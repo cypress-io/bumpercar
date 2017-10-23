@@ -19,10 +19,16 @@ module.exports = {
       providers.appVeyor = appVeyorProvider.configure(configProviders.appVeyor)
 
     if configProviders.buildkite?
-      providers.appVeyor = buildkiteProvider.configure(configProviders.buildkite)
+      providers.buildkite = buildkiteProvider.configure(configProviders.buildkite)
 
     findProviderOrDie = (providerName) ->
-      providers[providerName] or throw new Error("Provider wasn't configured: '#{providerName}'")
+      if not providers[providerName]
+        msg = """
+        Provider wasn't configured: '#{providerName}'
+        Available providers: #{Object.keys(providers)}
+        """
+        throw new Error(msg)
+      providers[providerName]
 
     return {
       _providers: providers
