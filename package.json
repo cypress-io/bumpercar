@@ -28,7 +28,9 @@
     "@cypress/coffee-script": "0.1.2",
     "axios": "^0.15.3",
     "bluebird": "^3.5.0",
+    "check-more-types": "^2.24.0",
     "debug": "^3.1.0",
+    "lazy-ass": "^1.6.0",
     "lodash": "^4.17.4",
     "ramda": "^0.24.1"
   },
@@ -38,6 +40,7 @@
     "condition-circle": "^1.5.0",
     "github-post-release": "^1.13.1",
     "mocha": "^3.2.0",
+    "nock": "^9.0.24",
     "semantic-release": "^8.0.3",
     "sinon": "^1.17.7",
     "sinon-as-promised": "^4.0.2",
