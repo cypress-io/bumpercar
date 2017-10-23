@@ -2,6 +2,9 @@ _         = require("lodash")
 Promise   = require("bluebird")
 providerApi = require("./buildkite-api")
 debug = require("debug")("bumper")
+parse = require('parse-github-repo-url')
+la = require("lazy-ass")
+check = require("check-more-types")
 
 api =
   configure: (options={}) ->
@@ -9,8 +12,18 @@ api =
 
     return {
       updateProjectEnv: (organization, project, variables) ->
-        debug("updating Buildkite variables for", organization, project)
+        if check.unemptyString(organization) and _.isPlainObject(project)
+          # user probably passed just repo + variables
+          debug("extracting org and project from", organization)
+          variables = project
+          [organization, project] = parse(organization)
+
+        debug("updating Buildkite variables for org '%s' project '%s'", organization, project)
         debug(variables)
+        la(check.unemptyString(organization), "missing organization name", organization)
+        la(check.unemptyString(project), "missing project name", project)
+        la(_.isPlainObject(variables), "missing variables object", variables)
+
         api.updateEnvironmentVariables(organization, project, variables)
 
       runProject: (organization, project) ->
