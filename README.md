@@ -37,6 +37,24 @@ car.updateProjectEnv("cypress-io/cypress-download", "circle", {
   car.runProject("cypress-io/cypress-download", "circle")
 ```
 
+## API
+
+This module supports
+
+* Travis
+  - [x] setting environment variables
+  - [x] fetch last build by id
+  - [x] restart build by id
+* CircleCI
+  - [x] setting environment variables
+  - [x] starting a build
+* AppVeyor
+  - [x] setting environment variables
+  - [ ] starting a build
+* Buildkite
+  - [x] setting environment variables
+  - [ ] starting a build
+
 ## Testing
 
 - `npm test` runs the unit tests once
