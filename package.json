@@ -7,7 +7,8 @@
     "release": "releaser",
     "test": "NODE_ENV=test mocha",
     "watch": "NODE_ENV=test mocha --watch",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "size": "t=\"$(npm pack .)\"; wc -c \"${t}\"; tar tvf \"${t}\"; rm \"${t}\";"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
     "releasing",
     "versioning"
   ],
+  "files": ["lib"],
   "author": "Loren Norman <loren@cypress.io>",
   "license": "MIT",
   "bugs": {
