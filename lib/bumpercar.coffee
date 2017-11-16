@@ -43,6 +43,9 @@ module.exports = {
 
         .catch (error) ->
           console.error("Error attempting to update the variable #{inspect envObject} for #{projectName} on #{providerName}")
+          if error and error.response and error.response.data
+            console.error("error response data")
+            console.error(error.response.data)
           throw error
 
       runProject: (projectName, providerName) ->
