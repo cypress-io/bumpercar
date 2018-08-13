@@ -58,7 +58,7 @@ This module supports
 
 ## Debugging
 
-Run commands with `DEBUG=bumper` environment variable
+Run commands with `DEBUG=bumper` environment variable. To see debug messages from the unit tests, run with `DEBUG=test` environment variable.
 
 [semantic-image]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
 [semantic-url]: https://github.com/semantic-release/semantic-release

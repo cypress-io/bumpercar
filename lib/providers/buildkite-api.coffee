@@ -31,9 +31,13 @@ module.exports = {
     # returns merged variable object from pipeline
     setEnvironmentVariables = (organization, project, variables = {}) ->
       url = getPipelineUrl(organization, project)
-      api.patch(url, {
+      debug("calling patch url", url)
+      data = {
         env: variables
-      })
+      }
+      debug(data)
+
+      api.patch(url, data)
       .then toData
       .then env
 
@@ -54,9 +58,13 @@ module.exports = {
       .then toData
 
     api.updateEnvironmentVariables = (organization, project, variables) ->
+      debug("updating environment variables for project", project)
+      debug("variable names:", Object.keys(variables))
+
       api.getPipeline(organization, project)
       .then env
       .then (oldVariables) ->
+        debug("got old variables, merging")
         merged = R.merge(oldVariables, variables)
         setEnvironmentVariables(organization, project, merged)
 

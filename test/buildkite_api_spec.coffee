@@ -6,6 +6,7 @@ la = require("lazy-ass")
 check = require("check-more-types")
 R = require("ramda")
 nock = require('nock')
+debug = require("debug")("test")
 
 describe "Buildkite API wrapper", ->
   it "has API base url", ->
@@ -32,6 +33,8 @@ describe "Buildkite API wrapper", ->
 
     beforeEach () ->
       pipelineUrl = api.getPipelineUrl(organization, project)
+      debug("pipeline url", pipelineUrl)
+      debug("buildkite url", buildkiteApi.url)
 
       nock(buildkiteApi.url)
         .get(pipelineUrl)
@@ -40,6 +43,7 @@ describe "Buildkite API wrapper", ->
       nock(buildkiteApi.url)
         .patch(pipelineUrl)
         .reply(200, (uri, requestBody, cb) ->
+          debug("replying to patch")
           pipeline.env = R.merge(pipeline.env, requestBody.env)
           cb(null, [200, pipeline])
         )
