@@ -41,7 +41,7 @@
     "ramda": "^0.24.1"
   },
   "devDependencies": {
-    "@cypress/releaser": "0.1.12",
+    "@cypress/releaser": "0.2.2",
     "chai": "^3.5.0",
     "condition-circle": "^1.5.0",
     "git-issues": "^1.3.1",
