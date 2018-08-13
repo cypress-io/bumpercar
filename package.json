@@ -38,7 +38,7 @@
     "lazy-ass": "^1.6.0",
     "lodash": "^4.17.4",
     "parse-github-repo-url": "^1.4.1",
-    "ramda": "^0.24.1"
+    "ramda": "^0.25.0"
   },
   "devDependencies": {
     "@cypress/releaser": "0.2.2",
