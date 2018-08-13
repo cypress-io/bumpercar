@@ -2,14 +2,10 @@
 
 Make it easy to bump versions and re-run CI builds across many projects and CI providers.
 
-[![CircleCI](https://circleci.com/gh/cypress-io/bumpercar.svg?style=svg)](https://circleci.com/gh/cypress-io/bumpercar)
-[![semantic-release][semantic-image] ][semantic-url]
-
-[semantic-image]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
-[semantic-url]: https://github.com/semantic-release/semantic-release
+[![CircleCI](https://circleci.com/gh/cypress-io/bumpercar.svg?style=svg)](https://circleci.com/gh/cypress-io/bumpercar) [![semantic-release][semantic-image] ][semantic-url] [![renovate-app badge][renovate-badge]][renovate-app]
 
 ```coffeescript
-bumpercar = require("cypress-bumpercar")
+bumpercar = require("@cypress/bumpercar")
 
 # configure a new Bumpercar
 car = bumpercar.create({
@@ -64,10 +60,7 @@ This module supports
 
 Run commands with `DEBUG=bumper` environment variable
 
-## Changelog
-
-#### 1.0.6 - *(04/20/17)*
-- bump cypress coffee script and releaser dep
-
-#### 1.0.5 - *(03/10/17)*
-- add cypress-core-releaser to the mix and do a release
+[semantic-image]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
+[semantic-url]: https://github.com/semantic-release/semantic-release
+[renovate-badge]: https://img.shields.io/badge/renovate-app-blue.svg
+[renovate-app]: https://renovateapp.com/
