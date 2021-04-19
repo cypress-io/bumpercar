@@ -36,7 +36,7 @@
     "check-more-types": "^2.24.0",
     "debug": "^3.1.0",
     "lazy-ass": "^1.6.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.19",
     "parse-github-repo-url": "^1.4.1",
     "ramda": "^0.27.0"
   },
