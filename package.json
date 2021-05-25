@@ -49,7 +49,7 @@
     "semantic-release": "17.4.3",
     "sinon": "1.17.7",
     "sinon-as-promised": "4.0.3",
-    "sinon-chai": "2.14.0",
+    "sinon-chai": "3.7.0",
     "snap-shot-it": "4.1.5"
   },
   "release": {
